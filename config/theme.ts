@@ -5,8 +5,9 @@
 export const theme = {
   colors: {
     paper: "#F6EFE4",
-    brand: "#9B2E2A",
-    brandDark: "#7A221F",
+    brand: "#C60004",
+    brandDark: "#8E0003",
+    brandSoft: "#E24B4E",
     accent: "#3E7A4F",
     ink: "#2C1814",
     surface: "#FFFCF8",

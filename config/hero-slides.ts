@@ -2,23 +2,23 @@ import type { StaticImageData } from "next/image";
 
 import { siteConfig } from "@/config/site";
 
-import heroExt from "../IMGS/EXT_NEW.png";
-import heroTerrasse from "../IMGS/Pizza en terrasse ensoleillée.png";
-import heroBistro from "../IMGS/Pizza gourmande dans une ambiance bistro.png";
+import heroStorefront from "../IMGS/header.png";
+import heroTable from "../IMGS/header1.png";
+import heroSalmon from "../IMGS/header2.png";
 
 export type HeroSlide = { src: StaticImageData; alt: string };
 
 export const HERO_SLIDES: HeroSlide[] = [
   {
-    src: heroTerrasse,
-    alt: `Pizza en terrasse ensoleillée — ${siteConfig.name}`,
+    src: heroSalmon,
+    alt: `Pizza au saumon — ${siteConfig.name}`,
   },
   {
-    src: heroBistro,
-    alt: `Pizza gourmande, ambiance bistro — ${siteConfig.name}`,
+    src: heroTable,
+    alt: `Pizza garnie sur nappe vichy — ${siteConfig.name}`,
   },
   {
-    src: heroExt,
-    alt: `${siteConfig.name} — devanture et place du village`,
+    src: heroStorefront,
+    alt: `${siteConfig.name} — façade de la pizzeria à ${siteConfig.address.addressLocality}`,
   },
 ];

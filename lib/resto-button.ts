@@ -11,11 +11,11 @@ export const restoButtonVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-2 border-[var(--resto-surface)] bg-[var(--resto-surface)] text-[var(--resto-brand)] shadow-lg hover:border-[var(--resto-brand)] hover:bg-[var(--resto-brand)] hover:text-white hover:shadow-[0_14px_36px_rgba(155,46,42,0.28)]",
+          "border-2 border-[var(--resto-surface)] bg-[var(--resto-surface)] text-[var(--resto-brand)] shadow-lg hover:border-[var(--resto-brand)] hover:bg-[var(--resto-brand)] hover:text-white hover:shadow-[0_14px_36px_rgba(198,0,4,0.28)]",
         command:
-          "bg-[var(--resto-brand)] text-white shadow-lg hover:bg-[var(--resto-surface)] hover:text-[var(--resto-brand)] hover:shadow-[0_14px_36px_rgba(155,46,42,0.28)]",
+          "bg-[var(--resto-brand)] text-white shadow-lg hover:bg-[var(--resto-surface)] hover:text-[var(--resto-brand)] hover:shadow-[0_14px_36px_rgba(198,0,4,0.28)]",
         secondary:
-          "border-2 border-[var(--resto-surface)] bg-[var(--resto-surface)] text-[var(--resto-brand)] shadow-md hover:border-[var(--resto-brand)] hover:bg-[var(--resto-brand)] hover:text-white hover:shadow-[0_14px_36px_rgba(155,46,42,0.35)]",
+          "border-2 border-[var(--resto-surface)] bg-[var(--resto-surface)] text-[var(--resto-brand)] shadow-md hover:border-[var(--resto-brand)] hover:bg-[var(--resto-brand)] hover:text-white hover:shadow-[0_14px_36px_rgba(198,0,4,0.35)]",
         outline:
           "border-2 border-[var(--resto-ink)]/22 bg-[var(--resto-surface)] text-[var(--resto-ink)] font-extrabold uppercase tracking-wide hover:border-[var(--resto-brand)] hover:bg-[var(--resto-brand)] hover:text-white",
         social:
@@ -51,10 +51,10 @@ export function restoButtonClass(
 }
 
 export const menuToggleActive =
-  "border-2 border-[var(--resto-brand)] bg-[var(--resto-brand)] text-white shadow-lg hover:bg-[var(--resto-brand-dark)] hover:shadow-xl";
+  "border-2 border-[var(--resto-brand-dark)] bg-[var(--resto-brand)] text-white shadow-lg hover:bg-[var(--resto-brand-dark)] hover:shadow-xl";
 
 export const menuToggleInactive =
-  "border-2 border-[var(--resto-ink)]/18 bg-[var(--resto-surface)] text-[var(--resto-ink)]/88 shadow-sm";
+  "border-2 border-[var(--resto-brand-soft)]/45 bg-[var(--resto-surface)] text-[var(--resto-ink)]/88 shadow-sm";
 
 export const menuToggleInactiveHover = {
   forest:

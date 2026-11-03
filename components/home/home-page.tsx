@@ -19,11 +19,16 @@ import {
 import type { MenuItem } from "@/data/menu";
 import { HERO_SLIDES } from "@/config/hero-slides";
 import { restoButtonClass } from "@/lib/resto-button";
-import { logoScript, sans } from "@/lib/fonts";
+import { sans } from "@/lib/fonts";
+import logoMark from "../../IMGS/logo.png";
+import logoBlanc from "../../IMGS/logo_blanc.png";
 import { PAGE_SHELL } from "@/lib/page-shell";
 import { MenuCarte } from "@/components/home/menu-carte";
 import { PizzaAllergenPanel } from "@/components/pizza-allergen-panel";
-import { HeaderBotaniqueBandeau, HerbPair } from "@/components/decor-ornament";
+import {
+  FooterPizzaBandeau,
+  HeaderBotaniqueBandeau,
+} from "@/components/decor-ornament";
 import { getAddressLines, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -83,51 +88,42 @@ function Ribbon({
 
 function LogoLockup({
   size = "lg",
-  onDark = false,
   showTagline = false,
+  light = false,
 }: {
   size?: "lg" | "sm";
-  onDark?: boolean;
   showTagline?: boolean;
+  light?: boolean;
 }) {
-  const ink = onDark ? "text-[var(--resto-surface)]" : "text-[var(--resto-brand)]";
-  const bar = onDark ? "bg-[var(--resto-surface)]" : "bg-[var(--resto-brand)]";
+  const frame = light
+    ? { aspect: "1688 / 594", width: "105.1%", left: "-3.79%", top: "-25.93%" }
+    : { aspect: "1213 / 436", width: "146.25%", left: "-24.81%", top: "-50.46%" };
+
   return (
     <div className="text-center">
-      <p
-        className={cn(
-          "font-extrabold uppercase tracking-[0.18em]",
-          ink,
-          size === "lg"
-            ? "text-xl sm:text-2xl md:text-[1.65rem]"
-            : "text-sm sm:text-base"
-        )}
-      >
-        {siteConfig.pickupLabel}
-      </p>
-      <h1
-        className={cn(
-          logoScript.className,
-          "mt-2 leading-none drop-shadow-md",
-          ink,
-          size === "lg"
-            ? "text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
-            : "text-4xl"
-        )}
-      >
-        {siteConfig.name.split(" ").map((word) => (
-          <span key={word} className="block">
-            {word}
-          </span>
-        ))}
+      <h1>
+        <span
+          className={cn(
+            "relative mx-auto block overflow-hidden",
+            size === "lg"
+              ? "w-[min(92vw,20rem)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.55)] sm:w-[26rem] md:w-[32rem] lg:w-[38rem]"
+              : "w-56 sm:w-72"
+          )}
+          style={{ aspectRatio: frame.aspect }}
+        >
+          <Image
+            src={light ? logoBlanc : logoMark}
+            alt={`${siteConfig.name} — ${siteConfig.pickupLabel}`}
+            priority={size === "lg"}
+            className="absolute h-auto max-w-none"
+            style={{
+              width: frame.width,
+              left: frame.left,
+              top: frame.top,
+            }}
+          />
+        </span>
       </h1>
-      <div
-        className={cn(
-          "mx-auto mt-4 rounded-full",
-          bar,
-          size === "lg" ? "h-2 w-40 sm:w-52 md:w-60" : "h-1 w-24"
-        )}
-      />
       {showTagline && (
         <p className="mx-auto mt-6 max-w-2xl text-xl font-bold leading-snug text-white drop-shadow-md sm:mt-8 sm:text-2xl md:text-[1.75rem] md:leading-snug">
           {siteConfig.heroTagline}
@@ -423,7 +419,7 @@ export default function HomePage() {
             "relative z-10 flex min-h-[88vh] flex-col items-center justify-center px-2 pb-10 pt-14 text-center sm:pb-12 sm:pt-16"
           )}
         >
-          <LogoLockup onDark showTagline />
+          <LogoLockup showTagline light />
           <a
             href="#menu"
             className={cn("mt-8 sm:mt-10", restoButtonClass("primary", "md"))}
@@ -442,7 +438,7 @@ export default function HomePage() {
             Adresse & horaires
             <span
               aria-hidden
-              className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 bg-[var(--resto-accent)] transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100"
+              className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 bg-[var(--resto-brand)] transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100"
             />
           </a>
         </div>
@@ -508,9 +504,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="relative bg-[var(--resto-paper)] py-10 pb-28 sm:py-12 md:pb-12">
-        <div className={PAGE_SHELL}>
-          <HerbPair size="sm" className="mb-8 sm:mb-10" />
+      <footer className="relative bg-[var(--resto-paper)] pb-28 md:pb-12">
+        <FooterPizzaBandeau />
+        <div className={cn(PAGE_SHELL, "py-10 sm:py-12")}>
           <div className="text-center text-sm font-medium text-[var(--resto-ink)]/85 sm:text-base">
             <p className="font-extrabold uppercase tracking-[0.14em] text-[var(--resto-brand)]">
               {siteConfig.name} — {siteConfig.footerLine}

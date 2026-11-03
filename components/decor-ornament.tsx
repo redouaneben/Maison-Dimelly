@@ -1,72 +1,38 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 
-import { cn } from "@/lib/utils";
+import basHeader from "../IMGS/bas_header.png";
+import footerBand from "../IMGS/footer.png";
 
-import botaniqueBandeau from "../IMGS/Bandeau décoratif botanique vert.png";
-import decorHerb from "../IMGS/herb_sprig_left.png";
-
-function DecorOrnament({
-  src,
-  className,
-}: {
-  src: StaticImageData;
-  className?: string;
-}) {
+/** Frise de parts de pizza, entre le hero et la carte. */
+export function HeaderBotaniqueBandeau() {
   return (
-    <Image
-      src={src}
-      alt=""
-      aria-hidden
-      width={src.width}
-      height={src.height}
-      className={cn(
-        "pointer-events-none h-auto max-w-none select-none",
-        className
-      )}
-      style={{ filter: "var(--resto-decor-filter)" }}
-      sizes="160px"
-    />
-  );
-}
-
-export function HerbPair({
-  className,
-  size = "md",
-}: {
-  className?: string;
-  size?: "sm" | "md";
-}) {
-  const leaf = size === "sm" ? "w-16 sm:w-20" : "w-24 sm:w-32";
-  const opacity = size === "sm" ? "opacity-40" : "opacity-[0.48]";
-
-  return (
-    <div
-      aria-hidden
-      className={cn("flex items-end justify-center gap-6 sm:gap-10", className)}
-    >
-      <DecorOrnament
-        src={decorHerb}
-        className={cn(leaf, opacity, "-scale-x-100 rotate-[-6deg]")}
-      />
-      <DecorOrnament
-        src={decorHerb}
-        className={cn(leaf, opacity, "rotate-[6deg]")}
-      />
+    <div aria-hidden className="relative z-20 mt-12 sm:mt-16 lg:mt-20">
+      <div
+        className="relative mx-auto w-[min(94%,52rem)] overflow-hidden sm:w-[min(88%,68rem)]"
+        style={{ aspectRatio: "2136 / 324" }}
+      >
+        <Image
+          src={basHeader}
+          alt=""
+          className="absolute h-auto max-w-none"
+          style={{ width: "101.69%", left: "-0.7%", top: "-16.67%" }}
+          sizes="100vw"
+        />
+      </div>
     </div>
   );
 }
 
-/** Bandeau sous le hero uniquement */
-export function HeaderBotaniqueBandeau() {
+/** Frise de parts de pizza, en haut du pied de page. */
+export function FooterPizzaBandeau() {
   return (
-    <div aria-hidden className="relative w-full px-5 py-1 sm:px-8 sm:py-1.5 lg:px-12">
+    <div aria-hidden className="relative mx-auto h-9 w-[min(88%,36rem)] overflow-hidden sm:h-11 sm:w-[min(70%,42rem)]">
       <Image
-        src={botaniqueBandeau}
+        src={footerBand}
         alt=""
-        width={botaniqueBandeau.width}
-        height={botaniqueBandeau.height}
-        className="mx-auto h-auto w-full max-w-4xl object-contain opacity-90 mix-blend-multiply sm:max-w-5xl lg:max-w-6xl"
-        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 72rem"
+        fill
+        className="object-cover object-center"
+        sizes="100vw"
       />
     </div>
   );

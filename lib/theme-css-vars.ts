@@ -8,6 +8,7 @@ export function themeCssVariables(): CSSProperties {
     "--resto-paper": c.paper,
     "--resto-brand": c.brand,
     "--resto-brand-dark": c.brandDark,
+    "--resto-brand-soft": c.brandSoft,
     "--resto-accent": c.accent,
     "--resto-ink": c.ink,
     "--resto-surface": c.surface,
