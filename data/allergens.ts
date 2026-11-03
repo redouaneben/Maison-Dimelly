@@ -77,6 +77,7 @@ export const PIZZA_ALLERGENS: Record<string, string[]> = {
   Desperados: ["Gluten"],
   "Bière Marius": ["Gluten"],
   Heineken: ["Gluten"],
+  "Pizza du mois": ["Gluten", "Lait"],
 };
 
 export const ALLERGEN_DISCLAIMER =

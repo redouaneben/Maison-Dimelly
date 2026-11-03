@@ -4,10 +4,10 @@ import pizzaDuMoisImage from "../IMGS/pizzadumois.jpg";
 
 /** Mise en avant mensuelle — photo et recette à personnaliser */
 export const pizzaDuMois = {
-  name: "Plat du mois",
+  name: "Pizza du mois",
   ingredients:
-    "Description des ingrédients et de la recette du moment (exemple template).",
-  price: 14.0,
+    "Base crème, jambon cru, copeaux de parmesan, touches de fromage frais, olives noires, filet de crème de balsamique.",
+  price: 15.3,
   image: pizzaDuMoisImage as StaticImageData,
-  imageAlt: "Plat du mois — photo d'exemple",
+  imageAlt: "Pizza du mois — Maison Dimelly",
 } as const;

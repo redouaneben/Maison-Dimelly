@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Info, Phone } from "lucide-react";
 
 import { MENU_SECTIONS, type MenuItem } from "@/data/menu";
+import { PizzaDuMoisCard } from "@/components/home/pizza-du-mois-card";
 import { siteConfig } from "@/config/site";
 import { PAGE_SHELL } from "@/lib/page-shell";
 import {
@@ -232,6 +233,35 @@ export function MenuCarte({
             ) : null}
           </motion.div>
         </AnimatePresence>
+
+        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:mt-16 lg:gap-10">
+          <div className="rounded-[2rem] border border-[var(--resto-ink)]/10 bg-[var(--resto-surface)]/95 p-8 shadow-sm lg:p-10">
+            <div className="mb-5 flex justify-center">
+              <h2 className={sectionTitleTypography}>Suppléments</h2>
+            </div>
+            <table className="w-full text-lg font-semibold sm:text-xl">
+              <tbody>
+                <tr className="border-b border-[var(--resto-ink)]/10">
+                  <td className="py-4">Ingrédient supplémentaire</td>
+                  <td className="py-4 text-right font-extrabold tabular-nums">
+                    1,00&nbsp;€
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-4">Mozzarella di Bufala</td>
+                  <td className="py-4 text-right font-extrabold tabular-nums">
+                    2,50&nbsp;€
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p className="mt-6 text-lg font-medium text-[var(--resto-ink)]/85 sm:text-xl">
+              Allergènes : informations à consulter sur place (tableau affiché
+              en boutique).
+            </p>
+          </div>
+          <PizzaDuMoisCard onAllergenClick={onAllergenClick} />
+        </div>
 
         <div className="mt-12 flex flex-col items-center text-center lg:mt-16">
           <a
