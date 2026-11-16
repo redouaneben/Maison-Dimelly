@@ -16,8 +16,4 @@ export const theme = {
   },
   decorBrandFilter:
     "brightness(0) saturate(100%) invert(16%) sepia(42%) saturate(3200%) hue-rotate(338deg) brightness(88%) contrast(96%)",
-  fonts: {
-    script: "Fraunces",
-    sans: "Outfit",
-  },
 } as const;

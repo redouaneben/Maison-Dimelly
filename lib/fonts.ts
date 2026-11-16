@@ -1,13 +1,4 @@
-import { Fraunces, Outfit } from "next/font/google";
-
-import { theme } from "@/config/theme";
-
-/** Polices Google — noms dans `config/theme.ts` (documentation) */
-export const logoScript = Fraunces({
-  subsets: ["latin"],
-  weight: "600",
-  display: "swap",
-});
+import { Outfit } from "next/font/google";
 
 export const sans = Outfit({
   subsets: ["latin"],
@@ -15,5 +6,3 @@ export const sans = Outfit({
   display: "swap",
   variable: "--font-sans-site",
 });
-
-void theme.fonts;

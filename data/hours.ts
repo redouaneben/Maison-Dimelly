@@ -5,7 +5,10 @@ import {
 
 export type DaySlot = { start: number; end: number };
 
-/** Minutes depuis minuit, fuseau Europe/Paris */
+/**
+ * Minutes depuis minuit, fuseau Europe/Paris.
+ * Source unique : le texte affiché et le JSON-LD en sont déduits.
+ */
 export const WEEK_SLOTS: Record<number, DaySlot[]> = {
   0: [],
   1: [],
@@ -169,6 +172,135 @@ const DAY_LABELS = [
   "samedi",
 ] as const;
 
+const SCHEMA_DAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const;
+
+function slotsSignature(slots: DaySlot[]) {
+  return slots.map((slot) => `${slot.start}-${slot.end}`).join("|");
+}
+
+/** Jours consécutifs, avec fusion samedi → dimanche. */
+function groupConsecutiveDays(days: number[]) {
+  const sorted = [...days].sort((a, b) => a - b);
+  const groups: number[][] = [];
+
+  for (const day of sorted) {
+    const prev = groups[groups.length - 1];
+    if (prev && prev[prev.length - 1] === day - 1) prev.push(day);
+    else groups.push([day]);
+  }
+
+  if (groups.length > 1) {
+    const first = groups[0]!;
+    const last = groups[groups.length - 1]!;
+    if (first[0] === 0 && last[last.length - 1] === 6) {
+      groups[0] = [...last, ...first];
+      groups.pop();
+    }
+  }
+
+  return groups;
+}
+
+function groupDaysBySchedule() {
+  const groups: { days: number[]; slots: DaySlot[] }[] = [];
+
+  for (let day = 0; day < 7; day++) {
+    const slots = WEEK_SLOTS[day] ?? [];
+    const prev = groups[groups.length - 1];
+    if (prev && slotsSignature(prev.slots) === slotsSignature(slots)) {
+      prev.days.push(day);
+    } else {
+      groups.push({
+        days: [day],
+        slots: slots.map((slot) => ({ start: slot.start, end: slot.end })),
+      });
+    }
+  }
+
+  if (groups.length > 1) {
+    const first = groups[0]!;
+    const last = groups[groups.length - 1]!;
+    if (slotsSignature(first.slots) === slotsSignature(last.slots)) {
+      first.days = [...last.days, ...first.days];
+      groups.pop();
+    }
+  }
+
+  return groups;
+}
+
+function mondayFirst(day: number) {
+  return (day + 6) % 7;
+}
+
+function formatDayList(days: number[]) {
+  const labels = days.map((day) => DAY_LABELS[day]!);
+  if (labels.length === 1) {
+    const label = labels[0]!;
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  }
+  if (labels.length === 2) {
+    const first = labels[0]!;
+    return `${first.charAt(0).toUpperCase()}${first.slice(1)} et ${labels[1]}`;
+  }
+  return `Du ${labels[0]} au ${labels[labels.length - 1]}`;
+}
+
+function formatSlotRange(slots: DaySlot[]) {
+  return slots
+    .map((slot) => `${formatMinutes(slot.start)} à ${formatMinutes(slot.end)}`)
+    .join(" et ");
+}
+
+function schemaTime(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+}
+
+export type OpeningHoursSpecification = {
+  "@type": "OpeningHoursSpecification";
+  dayOfWeek: string | string[];
+  opens: string;
+  closes: string;
+};
+
+/** Schema.org, déduit de WEEK_SLOTS. */
+export function buildOpeningHoursSpecification(): OpeningHoursSpecification[] {
+  const bySlot = new Map<string, { start: number; end: number; days: number[] }>();
+
+  for (let day = 0; day < 7; day++) {
+    for (const slot of WEEK_SLOTS[day] ?? []) {
+      const key = `${slot.start}-${slot.end}`;
+      const entry = bySlot.get(key);
+      if (entry) entry.days.push(day);
+      else bySlot.set(key, { start: slot.start, end: slot.end, days: [day] });
+    }
+  }
+
+  const specs: OpeningHoursSpecification[] = [];
+  for (const entry of bySlot.values()) {
+    for (const days of groupConsecutiveDays(entry.days)) {
+      const names = days.map((day) => SCHEMA_DAYS[day]!);
+      specs.push({
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: names.length === 1 ? names[0]! : names,
+        opens: schemaTime(entry.start),
+        closes: schemaTime(entry.end),
+      });
+    }
+  }
+  return specs;
+}
+
 function findNextOpening(from: Date): string | null {
   const startDay = from.getDay();
 
@@ -184,10 +316,21 @@ function findNextOpening(from: Date): string | null {
   return null;
 }
 
-/** Lignes affichées dans la section « Adresse & horaires » */
-export const HOURS_DISPLAY: { text: string; muted?: boolean }[] = [
-  { text: "Du mardi au jeudi — 11 h à 13 h et 18 h à 21 h" },
-  { text: "Vendredi — 11 h à 13 h et 18 h à 21 h 30" },
-  { text: "Samedi — 18 h à 21 h 30" },
-  { text: "Dimanche et lundi : fermé", muted: true },
-];
+/** Texte de la section « Adresse & horaires », déduit de WEEK_SLOTS. */
+export const HOURS_DISPLAY: { text: string; muted?: boolean }[] = (() => {
+  const groups = groupDaysBySchedule();
+  const byWeek = (a: { days: number[] }, b: { days: number[] }) =>
+    mondayFirst(a.days[0]!) - mondayFirst(b.days[0]!);
+  const open = groups.filter((group) => group.slots.length > 0).sort(byWeek);
+  const closed = groups.filter((group) => group.slots.length === 0).sort(byWeek);
+
+  return [
+    ...open.map((group) => ({
+      text: `${formatDayList(group.days)} — ${formatSlotRange(group.slots)}`,
+    })),
+    ...closed.map((group) => ({
+      text: `${formatDayList(group.days)} : fermé`,
+      muted: true as const,
+    })),
+  ];
+})();
