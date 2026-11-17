@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 
-import pizzaDuMoisImage from "../IMGS/pizzadumois.jpg";
+import pizzaDuMoisImage from "../IMGS/pizzadumois1.jpg";
 
 /** Mise en avant mensuelle — photo et recette à personnaliser */
 export const pizzaDuMois = {
